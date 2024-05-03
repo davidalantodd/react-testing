@@ -14,8 +14,9 @@ test('App should render', () => {
 });
 
 test('Button should render', () => {
-  // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render (<App/>);
+  expect(screen.getByText(/Current theme:/)).toBeInTheDocument();
+  // alt -- expect(screen.getByRole("button", {name: /Current theme:/})).toBeInTheDocument();
 });
 
 /**
@@ -23,16 +24,20 @@ test('Button should render', () => {
  * hint: use fireEvent.click(element) to trigger a click event on an element
  */
 test('theme button should update button text', () => {
-  // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render (<App/>);
+  const button = screen.getByText(/Current theme:/);
+  fireEvent.click(button);
+  expect(screen.getByText(/dark/)).toBeInTheDocument();
 });
 
 // BONUS
 // hint: there is a `.toHaveStyle` method.
 // e.g.: expect(element).toHaveStyle('color: #FFF');
 test('theme button should toggle styles', () => {
-  // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render (<App/>);
+  const button = screen.getByText(/Current theme:/);
+  fireEvent.click(button);
+  expect(document.body).toHaveStyle({color: "rgb(255,255,255)"});
 });
 
 /**
@@ -45,8 +50,13 @@ test('theme button should toggle styles', () => {
  * (getByText will throw an error if it is not rendered)
  */
 test('hidden button should toggle hidden content', () => {
-  // TODO: change the expect to actually test something 😉
-  expect('no test written').toBe('tested');
+  render(<App/>);
+  let hiddenText = screen.queryByText("this content is hidden by default");
+  expect(hiddenText).not.toBeInTheDocument();
+  const button = screen.getByText(/hidden content/);
+  fireEvent.click(button);
+  hiddenText = screen.queryByText("this content is hidden by default");
+  expect(hiddenText).toBeInTheDocument();
 });
 
 
@@ -56,3 +66,9 @@ test('hidden button should toggle hidden content', () => {
  *   - check the for the class name .container on the surrounding div
  *   - after clicking the toggle hidden content button, check for the button text to update to "hide" instead of "show"
  */
+
+
+test('check .container className', () => {
+  render(<App/>);
+  expect(document.querySelector('.container')).toBeInTheDocument();
+});
